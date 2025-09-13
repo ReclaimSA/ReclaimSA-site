@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ReclaimSA — Movement Hub</title>
+  <meta name="description" content="ReclaimSA — youth-led movement for lawful, peaceful civic action. Mission, demands, petitions, volunteer signups, news, and resources." />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220"/>
+  <style>
+    :root{
+      --bg:#071327; --card:#071a2a; --accent:#e11d48; --accent2:#06b6d4; --muted:#9fb0c3; --white:#f8fafc;
+      --container:1100px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#041022 0%,#071827 100%);color:var(--white);line-height:1.45}
+    .container{max-width:var(--container);margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:64px;height:64px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800}
+    h1{margin:0;font-size:1.6rem}
+    p.lead{color:var(--muted);margin-top:6px}
+    nav{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,.06);padding:8px 12px;border-radius:8px;color:var(--white);text-decoration:none;font-weight:600}
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:22px}
+    .card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px}
+    .muted{color:var(--muted);font-size:.95rem}
+    .section{margin-top:14px}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;font-size:.9rem;margin-bottom:6px}
+    input,textarea,select{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white)}
+    button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;padding:10px 14px;border-radius:10px;font-weight:800;color:#041025;cursor:pointer}
+    footer{margin-top:22px;color:var(--muted);font-size:.9rem;text-align:center}
+    ul.fa{padding-left:18px;margin:6px 0}
+    .notice{background:linear-gradient(90deg,#fff1f2,#fecdd3);color:#420617;padding:10px;border-radius:8px;font-weight:700}
+    .demand{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:8px}
+    .small{font-size:.85rem;color:var(--muted)}
+    @media (max-width:920px){.hero{grid-template-columns:1fr} .two{grid-template-columns:1fr} nav{overflow:auto}}
+    /* Simple utility */
+    .hidden{display:none}
+    .center{text-align:center}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">RS</div>
+      <div>
+        <h1>ReclaimSA — Movement Hub</h1>
+        <p class="lead">Lawful, peaceful civic action — organise, learn, and sustain change.</p>
+      </div>
+    </header>
+
+    <nav aria-label="quick links">
+      <a class="btn" href="#about">About</a>
+      <a class="btn" href="#mission">Mission</a>
+      <a class="btn" href="#demands">Demands</a>
+      <a class="btn" href="#petition">Petition</a>
+      <a class="btn" href="#volunteer">Volunteer</a>
+      <a class="btn" href="#partners">Partners</a>
+      <a class="btn" href="#news">News</a>
+    </nav>
+
+    <div class="hero" role="main">
+      <main>
+        <div class="card" id="about">
+          <h2>About ReclaimSA</h2>
+          <p class="muted">ReclaimSA is a youth-led movement committed to restoring dignity, transparency and opportunity in South Africa through lawful, non-violent civic action, digital campaigns, and policy-driven engagement. This site is the central hub for demands, petitions, volunteer coordination, training and news.</p>
+
+          <div class="section" id="mission">
+            <h3>Mission</h3>
+            <p class="muted">We mobilise and organise youth to hold public power accountable, restore essential services, and create economic opportunity — using lawful tactics that build broad public support and convert action into policy.</p>
+          </div>
+
+          <div class="section" id="demands">
+            <h3>Our Core Demands</h3>
+            <div class="demand"><strong>1. Immediate transparency:</strong> Publish procurement and senior-executive salary audits for top departments within 90 days.</div>
+            <div class="demand"><strong>2. Anti-corruption action:</strong> Establish an independent anti-corruption task force with prosecutorial authority and whistleblower protection.</div>
+            <div class="demand"><strong>3. Restore basic services:</strong> Publish and implement a 30/60/90-day public plan to restore electricity, water and healthcare in affected municipalities.</div>
+          </div>
+
+          <div class="section" id="petition">
+            <h3>Sign the National Petition</h3>
+            <p class="muted">Add your name to the petition demanding these reforms. We will publicly deliver signatures to named officials and document receipt.</p>
+            <!-- Replace the href with your ActionNetwork/Change.org/Google Form petition link -->
+            <p><a class="btn" href="https://example.com/your-petition" target="_blank" rel="noopener">Sign the Petition</a></p>
+          </div>
+
+          <div class="section" id="news">
+            <h3>News & Updates</h3>
+            <p class="muted">Latest updates will appear here. Use this space to publish evidence, photos, and official responses.</p>
+            <div id="newsList" class="muted">
+              <p>No posts yet — use the admin to publish the first update.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="section card" id="resources">
+          <h3>Resources</h3>
+          <p class="muted">Training materials, legal rights guides, marshals' scripts and medic checklists will be here. Publish PDFs or links for local organisers.</p>
+        </div>
+
+      </main>
+
+      <aside>
+        <div class="card" id="volunteer">
+          <h3>Volunteer Signup</h3>
+          <p class="muted">Volunteer roles: legal observer, marshal (non-confrontational), medic, logistics, comms.</p>
+
+          <!-- Replace the action URL with your Formspree endpoint, Netlify Forms setup, or Google Form embed link -->
+          <form id="signupForm" action="https://formspree.io/f/your-form-id" method="POST">
+            <label for="name">Full name</label>
+            <input id="name" name="name" required />
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+
+            <label for="city">City / Town</label>
+            <input id="city" name="city" required />
+
+            <label for="role">Volunteer role</label>
+            <select id="role" name="role">
+              <option>Legal observer</option>
+              <option>Marshal (non-confrontational)</option>
+              <option>First aid / medic</option>
+              <option>Logistics / transport</option>
+              <option>Comms / social media</option>
+            </select>
+
+            <label for="notes">Notes / availability</label>
+            <textarea id="notes" name="notes" rows="3"></textarea>
+
+            <input type="hidden" name="source" value="reclaimsa-site" />
+            <div style="margin-top:10px">
+              <button type="submit" class="primary">Sign up</button>
+            </div>
+            <p class="muted small" style="margin-top:8px">By signing up you confirm you'll act lawfully and follow the Code of Conduct.</p>
+          </form>
+
+          <div style="margin-top:12px" id="formMsg" class="muted"></div>
+          <hr style="border-color:rgba(255,255,255,0.03)" />
+          <h4 class="small">Quick links</h4>
+          <p class="small">Press: <a href="mailto:press@reclaimsa.org">press@reclaimsa.org</a></p>
+          <p class="small">Contact: <a href="mailto:info@reclaimsa.org">info@reclaimsa.org</a></p>
+        </div>
+
+        <div class="card" style="margin-top:12px" id="partners">
+          <h4>Partner & Endorse</h4>
+          <p class="muted">Organisations can endorse the demands publicly. Use the Partner form (link in README) to register endorsement.</p>
+          <p class="small">Partner list will be shown here once organisations endorse.</p>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h4>Day-of Checklist</h4>
+          <ul class="muted small">
+            <li>Carry ID, water, mask and basic first-aid.</li>
+            <li>Buddy up — share emergency contact details.</li>
+            <li>Know nearest exits and medic points.</li>
+            <li>Have legal hotline number saved.</li>
+          </ul>
+        </div>
+
+      </aside>
+    </div>
+
+    <footer class="center">
+      <p class="small">ReclaimSA — lawful, peaceful civic action only. We do not support violence or unlawful disruption. For legal advice contact accredited legal observers or a lawyer.</p>
+      <p class="small">&copy; 2025 ReclaimSA</p>
+    </footer>
+  </div>
+
+<script>
+  // Service worker registration (PWA)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      console.log('Service worker registered.', reg);
+    }).catch(function(err){
+      console.log('Service worker registration failed:', err);
+    });
+  }
+
+  // Basic form UX feedback
+  const form = document.getElementById('signupForm');
+  const msg = document.getElementById('formMsg');
+  form.addEventListener('submit', e => {
+    msg.textContent = 'Submitting...';
+    setTimeout(()=> msg.textContent = 'Thank you — check your email for confirmation. If you do not receive confirmation, contact info@reclaimsa.org', 1500);
+  });
+
+  // Simple helper: copy petition text to clipboard (user can paste into email or social)
+  function copyPetitionText(){
+    const text = "I support ReclaimSA's demands: Immediate transparency, anti-corruption action, and restoration of basic services. Sign at [link]";
+    navigator.clipboard.writeText(text).then(()=> alert('Petition text copied to clipboard'));
+  }
+</script>
+</body>
+</html>
