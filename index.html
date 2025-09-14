@@ -41,8 +41,9 @@
     .center{text-align:center}
     .row{display:flex;gap:10px;flex-wrap:wrap}
 	 /* Make inputs and textarea look consistent */
-    input, textarea {width: 100%;padding: 10px;margin-bottom: 15px;border: 1px solid #ccc;border-radius: 5px;font-size: 16px;background: #f9f9f9;color: #333;transition: all 0.3s ease;}
-    input:focus, input:valid,textarea:focus, textarea:valid {background: #fff;color: #000;border-color: #006400; /* Dark green border */outline: none;}
+    input, textarea {width: 100%;padding: 8px;margin-bottom: 8px;border: 1px solid #ccc;border-radius: 5px;font-size: 16px;background-color: #1a1a1a;color: #ffffff;transition: all 0.3s ease;}
+    input:focus, input:valid,textarea:focus, textarea:valid {background-color: #1a1a1a;color: #ffffff;border-color: #006400; /* Dark green border */outline: none;}
+	input::placeholder,textarea::placeholder,select::placeholder {color: #ccc;  /* Light gray placeholder */}
     input:focus + label, input:valid + label,textarea:focus + label, textarea:valid + label {color: #fff;}
   </style>
 </head>
