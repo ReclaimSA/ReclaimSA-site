@@ -40,6 +40,10 @@
     .hidden{display:none}
     .center{text-align:center}
     .row{display:flex;gap:10px;flex-wrap:wrap}
+	 /* Make inputs and textarea look consistent */
+    input, textarea {width: 100%;padding: 10px;margin-bottom: 15px;border: 1px solid #ccc;border-radius: 5px;font-size: 16px;background: #f9f9f9;color: #333;transition: all 0.3s ease;}
+    input:focus, input:valid,textarea:focus, textarea:valid {background: #fff;color: #000;border-color: #006400; /* Dark green border */outline: none;}
+    input:focus + label, input:valid + label,textarea:focus + label, textarea:valid + label {color: #fff;}
   </style>
 </head>
 <body>
