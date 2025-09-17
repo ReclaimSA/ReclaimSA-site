@@ -40,6 +40,15 @@
     .hidden{display:none}
     .center{text-align:center}
     .row{display:flex;gap:10px;flex-wrap:wrap}
+	/* News & Updates Section */
+	#news {padding: 50px 20px;background-color: var(--card);border-radius: 12px;max-width: var(--container);margin: 40px auto;color: var(--white);}
+	#news h2 {font-size: 2rem;margin-bottom: 15px;color: var(--accent2);}
+	.news-list {display: flex;flex-direction: column;gap: 20px;}
+	.news-item {background-color: var(--bg);padding: 20px;border-radius: 10px;box-shadow: 0 2px 8px rgba(0,0,0,0.3);}
+	.news-item h3 {margin: 0 0 10px 0;color: var(--accent);}
+	.news-item p {margin: 0 0 8px 0;line-height: 1.4;}
+	.news-item a {color: var(--accent2);text-decoration: underline;}
+	.news-date {font-size: 0.85rem;color: var(--muted);}
   </style>
 </head>
 <body>
@@ -100,9 +109,9 @@
 
           <div class="section" id="news">
             <h3>News & Updates</h3>
-            <p class="muted">Latest updates will appear here. Use this space to publish evidence, photos, and official responses.</p>
-            <div id="newsList" class="muted">
-              <p>No posts yet — use the admin to publish the first update.</p>
+            <p>Stay informed with the latest updates about ReclaimSA, upcoming events, and relevant local or global news.</p>
+            <div class="news-list">
+				   <!-- News articles will be injected here automatically -->
             </div>
           </div>
 
@@ -215,6 +224,34 @@
     const text = "I support ReclaimSA's demands: Immediate transparency, anti-corruption action, and restoration of basic services. Sign at [link]";
     navigator.clipboard.writeText(text).then(()=> alert('Petition text copied to clipboard'));
   }
+</script>
+	
+<script>
+const apiKey = "98b13abd44a04c9b86905bed316069e9"; // replace with your NewsAPI.org key
+const url = `https://newsapi.org/v2/everything?q=South+Africa+protest OR ReclaimSA&language=en&sortBy=publishedAt&pageSize=5&apiKey=${apiKey}`;
+async function loadNews() {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const newsContainer = document.querySelector(".news-list");
+    newsContainer.innerHTML = ""; // clear old news
+	data.articles.forEach(article => {
+      const item = document.createElement("div");
+      item.className = "news-item";
+      item.innerHTML = `
+        <h3>${article.title}</h3>
+        <p>${article.description || ""} <a href="${article.url}" target="_blank">Read more</a></p>
+        <span class="news-date">Published: ${new Date(article.publishedAt).toLocaleDateString()}</span>
+      `;
+      newsContainer.appendChild(item);
+    });
+  } catch (error) {
+    console.error("Error loading news:", error);
+  }
+}
+
+// Load news when page loads
+window.addEventListener("DOMContentLoaded", loadNews);
 </script>
 </body>
 </html>
