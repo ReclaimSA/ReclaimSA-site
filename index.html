@@ -108,7 +108,7 @@
 		  </div>
 
           <div class="section" id="news">
-            <h3>News & Updates</h3>
+            <h2>News & Updates</h2>
             <p>Stay informed with the latest updates about ReclaimSA, upcoming events, and relevant local or global news.</p>
             <div class="news-list">
 				   <!-- News articles will be injected here automatically -->
@@ -227,32 +227,59 @@
 </script>
 	
 <script>
-const apiKey = "98b13abd44a04c9b86905bed316069e9"; // your NewsAPI key
-const url = `https://newsapi.org/v2/everything?q=South+Africa+protest OR ReclaimSA&language=en&sortBy=publishedAt&pageSize=5&apiKey=${apiKey}`;
-async function loadNews() {
+async function loadRssNews() {
   try {
-    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-	const response = await fetch(proxyUrl + url);
+      // Google News RSS feed for South Africa protests & ReclaimSA
+    const query = encodeURIComponent("South Africa protest OR ReclaimSA OR corruption OR governance");
+    const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-ZA&gl=ZA&ceid=ZA:en`;
+
+    // Use AllOrigins proxy to bypass CORS
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
+    const response = await fetch(proxyUrl);
     const data = await response.json();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data.contents, "text/xml");
+    const items = doc.querySelectorAll("item");
+
     const newsContainer = document.querySelector(".news-list");
     newsContainer.innerHTML = "";
-	data.articles.forEach(article => {
-      const item = document.createElement("div");
-      item.className = "news-item";
-      item.innerHTML = `
-        <h3>${article.title}</h3>
-        <p>${article.description || ""} <a href="${article.url}" target="_blank">Read more</a></p>
-        <span class="news-date">Published: ${new Date(article.publishedAt).toLocaleDateString()}</span>
+	  
+      // Limit to 6 items
+    items.forEach((item, index) => {
+      if (index >= 6) return;
+      const title = item.querySelector("title")?.textContent || "";
+      const link = item.querySelector("link")?.textContent || "#";
+      const pubDate = new Date(item.querySelector("pubDate")?.textContent || Date.now());
+      const description = item.querySelector("description")?.textContent || "";
+
+      const article = document.createElement("div");
+      article.className = "news-item";
+      article.innerHTML = `
+        <h3><a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+        <p>${truncateText(stripHtml(description), 200)} <a href="${link}" target="_blank">Read more</a></p>
+        <span class="news-date">Published: ${pubDate.toLocaleDateString()}</span>
       `;
-      newsContainer.appendChild(item);
+      newsContainer.appendChild(article);
     });
   } catch (error) {
-    console.error("Error loading news:", error);
+    console.error("Error loading RSS feed:", error);
+    document.querySelector(".news-list").innerHTML = "<p>Unable to load news right now.</p>";
   }
 }
 
-// Load news when page loads
-window.addEventListener("DOMContentLoaded", loadNews);
+function stripHtml(html) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}
+
+function truncateText(text, maxLen) {
+  return text.length > maxLen ? text.substring(0, maxLen) + "…" : text;
+}
+
+// Load when page is ready
+window.addEventListener("DOMContentLoaded", loadRssNews);
 </script>
 </body>
 </html>
