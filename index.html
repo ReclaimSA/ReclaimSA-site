@@ -41,14 +41,17 @@
     .center{text-align:center}
     .row{display:flex;gap:10px;flex-wrap:wrap}
 	/* News & Updates Section */
-	#news {padding: 50px 20px;background-color: var(--card);border-radius: 12px;max-width: var(--container);margin: 40px auto;color: var(--white);}
-	#news h2 {font-size: 2rem;margin-bottom: 15px;color: var(--accent2);}
-	.news-list {display: flex;flex-direction: column;gap: 20px;}
-	.news-item {background-color: var(--bg);padding: 20px;border-radius: 10px;box-shadow: 0 2px 8px rgba(0,0,0,0.3);}
-	.news-item h3 {margin: 0 0 10px 0;color: var(--accent);}
-	.news-item p {margin: 0 0 8px 0;line-height: 1.4;}
-	.news-item a {color: var(--accent2);text-decoration: underline;}
-	.news-date {font-size: 0.85rem;color: var(--muted);}
+	#news {padding: 40px 20px;background-color: var(--card);border-radius: 12px;max-width: var(--container);margin: 40px auto;color: var(--white);text-align: center;}
+	#news h2 {font-size: 1.8rem;margin-bottom: 10px;color: var(--accent2);}
+	#news p {font-size: 1rem;color: var(--muted);margin-bottom: 20px;} 
+	.news-container {position: relative;background-color: var(--bg);padding: 20px;border-radius: 10px;box-shadow: 0 2px 8px rgba(0,0,0,0.3);min-height: 180px;}
+	.news-item {display: none;text-align: left;}
+	.news-item.active {display: block;}
+	.news-item h3 {font-size: 1.2rem; margin-bottom: 8pxcolor: var(--accent);}
+	.news-item p {font-size: 1rem;color: var(--white);}
+	.news-date {font-size: 0.85rem;color: var(--muted);display: block;margin-top: 10px;}
+	.news-controls {margin-top: 15px;display: flex;justify-content: space-between;}
+	.news-controls button {background: linear-gradient(90deg, var(--accent), var(--accent2));border: none;padding: 8px 14px;border-radius: 8px;font-weight: bold;color: #041025;cursor: pointer;}
   </style>
 </head>
 <body>
@@ -109,13 +112,17 @@
 
           <div class="section" id="news">
             <h2>News & Updates</h2>
-            <p>Stay informed with the latest updates about ReclaimSA, upcoming events, and relevant local or global news.</p>
-            <div class="news-list">
+            <p>Stay informed with the latest updates about South African issues, and global movements.</p>
+            <div class="news-container">
+				 <div class="news-item active">
 				   <!-- News articles will be injected here automatically -->
-            </div>
-          </div>
-
-        </div>
+				 </div>
+				 <div class="news-controls">
+					 <button id="prevNews">Previous</button>
+					 <button id="nextNews">Next</button>
+				 </div>
+			 </div>
+		  </div>
 
         <div class="section card" id="resources">
           <h3>Resources</h3>
@@ -227,13 +234,15 @@
 </script>
 	
 <script>
+<script>
+let articles = [];
+let currentIndex = 0;
+
 async function loadRssNews() {
   try {
-      // Google News RSS feed for South Africa protests & ReclaimSA
     const query = encodeURIComponent("South Africa protest OR ReclaimSA OR corruption OR governance");
     const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-ZA&gl=ZA&ceid=ZA:en`;
 
-    // Use AllOrigins proxy to bypass CORS
     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
     const response = await fetch(proxyUrl);
     const data = await response.json();
@@ -242,31 +251,44 @@ async function loadRssNews() {
     const doc = parser.parseFromString(data.contents, "text/xml");
     const items = doc.querySelectorAll("item");
 
-    const newsContainer = document.querySelector(".news-list");
-    newsContainer.innerHTML = "";
-	  
-      // Limit to 6 items
-    items.forEach((item, index) => {
-      if (index >= 6) return;
-      const title = item.querySelector("title")?.textContent || "";
-      const link = item.querySelector("link")?.textContent || "#";
-      const pubDate = new Date(item.querySelector("pubDate")?.textContent || Date.now());
-      const description = item.querySelector("description")?.textContent || "";
+    articles = Array.from(items).map(item => ({
+      title: item.querySelector("title")?.textContent || "",
+      link: item.querySelector("link")?.textContent || "#",
+      description: item.querySelector("description")?.textContent || "",
+      pubDate: new Date(item.querySelector("pubDate")?.textContent || Date.now())
+    }));
 
-      const article = document.createElement("div");
-      article.className = "news-item";
-      article.innerHTML = `
-        <h3><a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
-        <p>${truncateText(stripHtml(description), 200)} <a href="${link}" target="_blank">Read more</a></p>
-        <span class="news-date">Published: ${pubDate.toLocaleDateString()}</span>
-      `;
-      newsContainer.appendChild(article);
-    });
+    showArticle(0); // show first article
   } catch (error) {
     console.error("Error loading RSS feed:", error);
-    document.querySelector(".news-list").innerHTML = "<p>Unable to load news right now.</p>";
+    document.querySelector(".news-item").innerHTML = "<p>Unable to load news.</p>";
   }
 }
+
+function showArticle(index) {
+  const newsItem = document.querySelector(".news-item");
+  if (!articles.length) return;
+
+  const article = articles[index];
+  newsItem.innerHTML = `
+    <h3><a href="${article.link}" target="_blank" rel="noopener noreferrer">${article.title}</a></h3>
+    <p>${truncateText(stripHtml(article.description), 220)} <a href="${article.link}" target="_blank">Read more</a></p>
+    <span class="news-date">Published: ${article.pubDate.toLocaleDateString()}</span>
+  `;
+  newsItem.classList.add("active");
+}
+
+document.getElementById("nextNews").addEventListener("click", () => {
+  if (!articles.length) return;
+  currentIndex = (currentIndex + 1) % articles.length;
+  showArticle(currentIndex);
+});
+
+document.getElementById("prevNews").addEventListener("click", () => {
+  if (!articles.length) return;
+  currentIndex = (currentIndex - 1 + articles.length) % articles.length;
+  showArticle(currentIndex);
+});
 
 function stripHtml(html) {
   const tmp = document.createElement("div");
@@ -278,8 +300,9 @@ function truncateText(text, maxLen) {
   return text.length > maxLen ? text.substring(0, maxLen) + "…" : text;
 }
 
-// Load when page is ready
 window.addEventListener("DOMContentLoaded", loadRssNews);
+</script>
+
 </script>
 </body>
 </html>
