@@ -231,10 +231,11 @@ const apiKey = "98b13abd44a04c9b86905bed316069e9"; // your NewsAPI key
 const url = `https://newsapi.org/v2/everything?q=South+Africa+protest OR ReclaimSA&language=en&sortBy=publishedAt&pageSize=5&apiKey=${apiKey}`;
 async function loadNews() {
   try {
-    const response = await fetch(url);
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+	const response = await fetch(proxyUrl + url);
     const data = await response.json();
     const newsContainer = document.querySelector(".news-list");
-    newsContainer.innerHTML = ""; // clear old news
+    newsContainer.innerHTML = "";
 	data.articles.forEach(article => {
       const item = document.createElement("div");
       item.className = "news-item";
