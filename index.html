@@ -240,14 +240,16 @@ let currentIndex = 0;
 
 async function loadRssNews() {
   try {
-    const query = encodeURIComponent("South Africa protest OR ReclaimSA OR corruption OR governance");
-    const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-ZA&gl=ZA&ceid=ZA:en`;
+   const query = encodeURIComponent("South Africa protest OR ReclaimSA OR corruption OR governance");
+   const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-ZA&gl=ZA&ceid=ZA:en`;
 
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`;
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+   const proxyUrl = `https://thingproxy.freeboard.io/fetch/${feedUrl}`;
+   const response = await fetch(proxyUrl);
+   const xmlText = await response.text();
 
-    const items = data.items || [];
+   const parser = new DOMParser();
+   const doc = parser.parseFromString(xmlText, "text/xml");
+   const items = doc.querySelectorAll("item");
 
     articles = items.map(item => ({
 		title: item.title || "",
