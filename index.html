@@ -110,13 +110,11 @@
 		    </section>
 		  </div>
 
-          <div class="section" id="news">
+         <div class="section" id="news">
             <h2>News & Updates</h2>
             <p>Stay informed with the latest updates about South African issues, and global movements.</p>
             <div class="news-container">
-				 <div class="news-item active">
-				   <!-- News articles will be injected here automatically -->
-				 </div>
+				<div class="news-item active"></div>
 				 <div class="news-controls">
 					 <button id="prevNews">Previous</button>
 					 <button id="nextNews">Next</button>
@@ -232,78 +230,6 @@
     navigator.clipboard.writeText(text).then(()=> alert('Petition text copied to clipboard'));
   }
 </script>
-	
-<script>
-<script>
-let articles = [];
-let currentIndex = 0;
-
-async function loadRssNews() {
-  try {
-   const query = encodeURIComponent("South Africa protest OR ReclaimSA OR corruption OR governance");
-   const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=en-ZA&gl=ZA&ceid=ZA:en`;
-
-   const proxyUrl = `https://thingproxy.freeboard.io/fetch/${feedUrl}`;
-   const response = await fetch(proxyUrl);
-   const xmlText = await response.text();
-
-   const parser = new DOMParser();
-   const doc = parser.parseFromString(xmlText, "text/xml");
-   const items = doc.querySelectorAll("item");
-
-    articles = items.map(item => ({
-		title: item.title || "",
-		link: item.link || "#",
-		description: item.description || "",
-		pubDate: new Date(item.pubDate || Date.now())
-	}));
-
-
-    showArticle(0); // show first article
-  } catch (error) {
-    console.error("Error loading RSS feed:", error);
-    document.querySelector(".news-item").innerHTML = "<p>Unable to load news.</p>";
-  }
-}
-
-function showArticle(index) {
-  const newsItem = document.querySelector(".news-item");
-  if (!articles.length) return;
-
-  const article = articles[index];
-  newsItem.innerHTML = `
-    <h3><a href="${article.link}" target="_blank" rel="noopener noreferrer">${article.title}</a></h3>
-    <p>${truncateText(stripHtml(article.description), 220)} <a href="${article.link}" target="_blank">Read more</a></p>
-    <span class="news-date">Published: ${article.pubDate.toLocaleDateString()}</span>
-  `;
-  newsItem.classList.add("active");
-}
-
-document.getElementById("nextNews").addEventListener("click", () => {
-  if (!articles.length) return;
-  currentIndex = (currentIndex + 1) % articles.length;
-  showArticle(currentIndex);
-});
-
-document.getElementById("prevNews").addEventListener("click", () => {
-  if (!articles.length) return;
-  currentIndex = (currentIndex - 1 + articles.length) % articles.length;
-  showArticle(currentIndex);
-});
-
-function stripHtml(html) {
-  const tmp = document.createElement("div");
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || "";
-}
-
-function truncateText(text, maxLen) {
-  return text.length > maxLen ? text.substring(0, maxLen) + "…" : text;
-}
-
-window.addEventListener("DOMContentLoaded", loadRssNews);
-</script>
-
-</script>
+<script src="/news-client.js"></script>
 </body>
 </html>
