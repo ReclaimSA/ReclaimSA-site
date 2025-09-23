@@ -2,7 +2,7 @@
 // Client script that calls the Netlify function endpoint to load RSS XML and populate the carousel.
 // Default endpoint works when the site is served by Netlify. If your frontend stays on GitHub Pages,
 // replace API_ENDPOINT with the full Netlify function URL: https://YOUR_NETLIFY_DOMAIN/.netlify/functions/news
-const API_ENDPOINT = "/.netlify/functions/news"; // <-- change to full URL if using GitHub Pages frontend
+const API_ENDPOINT = "https://reclaimsa-site.netlify.app/.netlify/functions/news"; // <-- change to full URL if using GitHub Pages frontend
 
 let articles = [];
 let currentIndex = 0;
