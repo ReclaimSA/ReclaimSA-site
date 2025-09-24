@@ -2,7 +2,7 @@
   "name": "ReclaimSA",
   "short_name": "ReclaimSA",
   "description": "Join the movement to demand accountability and change in South Africa.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#071327",
   "theme_color": "#071327",
